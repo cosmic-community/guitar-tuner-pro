@@ -85,9 +85,10 @@ export class PitchDetector {
       this.analyser.fftSize = 2048;
       this.bufferLength = this.analyser.fftSize;
       
-      // Create Uint8Array with explicit ArrayBuffer to satisfy TypeScript strict typing
-      // This ensures compatibility with Web Audio API's getByteTimeDomainData method
-      this.dataArray = new Uint8Array(new ArrayBuffer(this.bufferLength));
+      // Create Uint8Array with explicit ArrayBuffer type for Web Audio API compatibility
+      // TypeScript strict mode requires explicit type to satisfy getByteTimeDomainData parameter
+      const buffer: ArrayBuffer = new ArrayBuffer(this.bufferLength);
+      this.dataArray = new Uint8Array(buffer);
 
       // Request microphone access
       this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
