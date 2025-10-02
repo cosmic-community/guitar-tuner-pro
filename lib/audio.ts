@@ -85,8 +85,9 @@ export class PitchDetector {
       this.analyser.fftSize = 2048;
       this.bufferLength = this.analyser.fftSize;
       
-      // CRITICAL FIX: Create Uint8Array with explicit buffer length only
-      // TypeScript correctly infers Uint8Array<ArrayBuffer> when using number constructor
+      // CRITICAL FIX: Create Uint8Array with explicit number to ensure correct type inference
+      // Using this.bufferLength (typed as number) instead of this.analyser.fftSize
+      // ensures TypeScript correctly infers Uint8Array<ArrayBuffer>
       this.dataArray = new Uint8Array(this.bufferLength);
 
       // Request microphone access
