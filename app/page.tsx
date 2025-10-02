@@ -41,6 +41,20 @@ export default async function Home() {
     defaultTuning = standardTuning
   }
 
+  // Ensure we have a valid default tuning - use first tuning if defaultTuning is null
+  const selectedDefaultTuning = defaultTuning || tunings[0]
+
+  // Safety check - this should never happen due to fallback above, but TypeScript needs it
+  if (!selectedDefaultTuning) {
+    return (
+      <main className="min-h-screen py-8 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-red-400">Error: No tunings available</p>
+        </div>
+      </main>
+    )
+  }
+
   return (
     <main className="min-h-screen py-8 px-4">
       <div className="max-w-4xl mx-auto">
@@ -55,7 +69,7 @@ export default async function Home() {
 
         <GuitarTuner 
           tunings={tunings} 
-          defaultTuning={defaultTuning || tunings[0]} 
+          defaultTuning={selectedDefaultTuning} 
         />
 
         <footer className="mt-16 text-center text-gray-500 text-sm">

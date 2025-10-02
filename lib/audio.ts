@@ -109,7 +109,11 @@ export class PitchDetector {
     for (let lag = 0; lag < this.bufferLength; lag++) {
       let sum = 0;
       for (let i = 0; i < this.bufferLength - lag; i++) {
-        sum += (this.dataArray[i] - 128) * (this.dataArray[i + lag] - 128);
+        const dataValue = this.dataArray[i]
+        const lagValue = this.dataArray[i + lag]
+        if (dataValue !== undefined && lagValue !== undefined) {
+          sum += (dataValue - 128) * (lagValue - 128);
+        }
       }
       correlations[lag] = sum;
     }
@@ -119,8 +123,11 @@ export class PitchDetector {
     let maxLag = -1;
     
     for (let i = 1; i < correlations.length; i++) {
-      if (correlations[i] > maxCorrelation && correlations[i] > correlations[i - 1]) {
-        maxCorrelation = correlations[i];
+      const currentCorr = correlations[i]
+      const prevCorr = correlations[i - 1]
+      if (currentCorr !== undefined && prevCorr !== undefined && 
+          currentCorr > maxCorrelation && currentCorr > prevCorr) {
+        maxCorrelation = currentCorr;
         maxLag = i;
       }
     }

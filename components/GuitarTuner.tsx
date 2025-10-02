@@ -28,7 +28,10 @@ export default function GuitarTuner({ tunings, defaultTuning }: GuitarTunerProps
     
     // Set first string as default
     if (selectedTuning?.metadata?.strings && selectedTuning.metadata.strings.length > 0) {
-      setSelectedString(selectedTuning.metadata.strings[0])
+      const firstString = selectedTuning.metadata.strings[0]
+      if (firstString) {
+        setSelectedString(firstString)
+      }
     }
 
     return () => {
@@ -43,7 +46,10 @@ export default function GuitarTuner({ tunings, defaultTuning }: GuitarTunerProps
       const strings = selectedTuning.metadata.strings
       if (!strings) return
       
-      setSelectedString(strings[0])
+      const firstString = strings[0]
+      if (firstString) {
+        setSelectedString(firstString)
+      }
     }
   }, [selectedTuning])
 
@@ -111,6 +117,7 @@ export default function GuitarTuner({ tunings, defaultTuning }: GuitarTunerProps
     const targetCents = calculateCents(detectedFrequency, selectedString.frequency)
     
     return {
+      frequency: detectedFrequency,
       note,
       octave,
       cents: targetCents,
