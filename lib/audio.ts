@@ -103,16 +103,19 @@ export class PitchDetector {
 
     this.analyser.getByteTimeDomainData(this.dataArray);
 
-    // Autocorrelation algorithm
+    // Autocorrelation algorithm with proper type safety
     const correlations = new Array(this.bufferLength).fill(0);
     
     for (let lag = 0; lag < this.bufferLength; lag++) {
       let sum = 0;
       for (let i = 0; i < this.bufferLength - lag; i++) {
-        const dataValue = this.dataArray[i]
-        const lagValue = this.dataArray[i + lag]
-        if (dataValue !== undefined && lagValue !== undefined) {
-          sum += (dataValue - 128) * (lagValue - 128);
+        // Safe array access with bounds checking
+        if (i < this.dataArray.length && (i + lag) < this.dataArray.length) {
+          const dataValue = this.dataArray[i];
+          const lagValue = this.dataArray[i + lag];
+          if (dataValue !== undefined && lagValue !== undefined) {
+            sum += (dataValue - 128) * (lagValue - 128);
+          }
         }
       }
       correlations[lag] = sum;
@@ -123,8 +126,8 @@ export class PitchDetector {
     let maxLag = -1;
     
     for (let i = 1; i < correlations.length; i++) {
-      const currentCorr = correlations[i]
-      const prevCorr = correlations[i - 1]
+      const currentCorr = correlations[i];
+      const prevCorr = correlations[i - 1];
       if (currentCorr !== undefined && prevCorr !== undefined && 
           currentCorr > maxCorrelation && currentCorr > prevCorr) {
         maxCorrelation = currentCorr;
