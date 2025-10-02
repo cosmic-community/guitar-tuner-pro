@@ -87,7 +87,6 @@ export class PitchDetector {
       
       // CRITICAL FIX: Explicitly create ArrayBuffer then Uint8Array from it
       // This ensures TypeScript knows the type is Uint8Array<ArrayBuffer> not Uint8Array<ArrayBufferLike>
-      // which satisfies the Web Audio API's getByteTimeDomainData type requirements
       const buffer = new ArrayBuffer(this.bufferLength);
       this.dataArray = new Uint8Array(buffer);
 
