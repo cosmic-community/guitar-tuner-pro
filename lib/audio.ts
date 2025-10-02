@@ -85,8 +85,9 @@ export class PitchDetector {
       this.analyser.fftSize = 2048;
       this.bufferLength = this.analyser.fftSize;
       
-      // Create Uint8Array without generic type parameter to avoid ArrayBufferLike incompatibility
-      this.dataArray = new Uint8Array(this.bufferLength);
+      // Create Uint8Array with proper ArrayBuffer type for getByteTimeDomainData compatibility
+      const buffer = new ArrayBuffer(this.bufferLength);
+      this.dataArray = new Uint8Array(buffer);
 
       // Request microphone access
       this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
