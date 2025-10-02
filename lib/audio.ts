@@ -84,7 +84,10 @@ export class PitchDetector {
       this.analyser = this.audioContext.createAnalyser();
       this.analyser.fftSize = 2048;
       this.bufferLength = this.analyser.fftSize;
-      this.dataArray = new Uint8Array(this.bufferLength);
+      
+      // Create Uint8Array with explicit ArrayBuffer to satisfy TypeScript strict typing
+      const buffer = new ArrayBuffer(this.bufferLength);
+      this.dataArray = new Uint8Array(buffer);
 
       // Request microphone access
       this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
