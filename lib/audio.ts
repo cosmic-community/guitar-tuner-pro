@@ -86,9 +86,8 @@ export class PitchDetector {
       
       // CRITICAL FIX: Create ArrayBuffer explicitly to satisfy TypeScript's strict typing
       // This ensures we get Uint8Array<ArrayBuffer> instead of Uint8Array<ArrayBufferLike>
-      const bufferSize = this.analyser.fftSize;
-      this.bufferLength = bufferSize;
-      const arrayBuffer = new ArrayBuffer(bufferSize);
+      this.bufferLength = this.analyser.fftSize;
+      const arrayBuffer = new ArrayBuffer(this.bufferLength);
       this.dataArray = new Uint8Array(arrayBuffer);
 
       // Request microphone access
