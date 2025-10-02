@@ -85,9 +85,10 @@ export class PitchDetector {
       this.analyser.fftSize = 2048;
       this.bufferLength = this.analyser.fftSize;
       
-      // Create Uint8Array directly - it automatically creates the correct ArrayBuffer type
-      // The Uint8Array constructor handles ArrayBuffer creation internally with proper typing
-      this.dataArray = new Uint8Array(this.bufferLength);
+      // Create ArrayBuffer first, then Uint8Array from it to ensure correct typing
+      // This resolves the TS2345 error by explicitly creating an ArrayBuffer type
+      const buffer = new ArrayBuffer(this.bufferLength);
+      this.dataArray = new Uint8Array(buffer);
 
       // Request microphone access
       this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
