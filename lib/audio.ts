@@ -85,8 +85,9 @@ export class PitchDetector {
       this.analyser.fftSize = 2048;
       this.bufferLength = this.analyser.fftSize;
       
-      // CRITICAL FIX: Create Uint8Array from ArrayBuffer to ensure proper typing
-      // This satisfies TypeScript's strict type checking for getByteTimeDomainData
+      // CRITICAL FIX: Create Uint8Array from explicit ArrayBuffer
+      // This ensures the type is Uint8Array<ArrayBuffer> not Uint8Array<ArrayBufferLike>
+      // which satisfies TypeScript's strict type checking for getByteTimeDomainData
       const arrayBuffer = new ArrayBuffer(this.bufferLength);
       this.dataArray = new Uint8Array(arrayBuffer);
 
