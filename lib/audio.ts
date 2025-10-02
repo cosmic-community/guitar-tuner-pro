@@ -85,8 +85,9 @@ export class PitchDetector {
       this.analyser.fftSize = 2048;
       this.bufferLength = this.analyser.fftSize;
       
-      // Create Uint8Array with explicit ArrayBuffer type to satisfy strict TypeScript checking
-      this.dataArray = new Uint8Array(new ArrayBuffer(this.bufferLength));
+      // Create Uint8Array directly with buffer length - this is the idiomatic approach
+      // and avoids TypeScript strict type checking issues with ArrayBuffer
+      this.dataArray = new Uint8Array(this.bufferLength);
 
       // Request microphone access
       this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
